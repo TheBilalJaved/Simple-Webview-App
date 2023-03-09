@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: 'images/mce.png',
+      splash: FlutterLogo,
       nextScreen: const HomeScreen(),
       splashTransition: SplashTransition.fadeTransition,
       pageTransitionType: PageTransitionType.bottomToTop,
@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               WebView(
                 key: _key,
-                initialUrl: "https://www.mubarakiyakw.com",
+                initialUrl: "URL",
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
                   _controllerCompleter.future
