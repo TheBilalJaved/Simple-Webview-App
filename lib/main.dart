@@ -1,12 +1,11 @@
-// ignore_for_file: avoid_print
 
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,11 +56,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true;
-  final _key = UniqueKey();
   late WebViewController _controller;
 
-  final Completer<WebViewController> _controllerCompleter =
-      Completer<WebViewController>();
   //Make sure this function return Future<bool> otherwise you will get an error
   Future<bool> _onWillPop(BuildContext context) async {
     if (await _controller.canGoBack()) {
@@ -73,9 +69,47 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(const Color(0x00000000))
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (int progress) {
+            // Update loading bar.
+          },
+          onPageStarted: (String url) {},
+          onPageFinished: (String url) {
+            setState(() {
+              isLoading = false;
+            });
+          },
+          onWebResourceError: (WebResourceError error) {},
+          onNavigationRequest: (NavigationRequest request) {
+            if (request.url.contains("mailto:")) {
+              launchUrl(Uri.parse(request.url));
+              return NavigationDecision.prevent;
+            } else if (request.url.contains("tel:")) {
+              launchUrl(Uri.parse(request.url));
+              return NavigationDecision.prevent;
+            } else if (request.url.contains("whatsapp:")) {
+              launchUrl(Uri.parse(request.url));
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+        ),
+      )
+      //paste your url here
+      ..loadRequest(Uri.parse('https://flutter.dev'));
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _onWillPop(context),
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (didPop) => _onWillPop(context),
       child: SafeArea(
         top: true,
         bottom: false,
@@ -83,41 +117,15 @@ class _HomeScreenState extends State<HomeScreen> {
         right: false,
         child: Scaffold(
           body: Stack(
-            children: <Widget>[
-              WebView(
-                key: _key,
-                initialUrl: "URL",
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (WebViewController webViewController) {
-                  _controllerCompleter.future
-                      .then((value) => _controller = value);
-                  _controllerCompleter.complete(webViewController);
-                },
-                navigationDelegate: (NavigationRequest request) {
-                  if (request.url.contains("mailto:")) {
-                    launch(request.url);
-                    return NavigationDecision.prevent;
-                  } else if (request.url.contains("tel:")) {
-                    launch(request.url);
-                    return NavigationDecision.prevent;
-                  } else if (request.url.contains("whatsapp:")) {
-                    launch(request.url);
-                    return NavigationDecision.prevent;
-                  }
-                  return NavigationDecision.navigate;
-                },
-                onPageFinished: (finish) {
-                  setState(() {
-                    isLoading = false;
-                  });
-                },
+            children: [
+              WebViewWidget(
+                controller: _controller,
               ),
               isLoading
-                  // ignore: prefer_const_constructors
-                  ? Center(
-                      child: const CircularProgressIndicator(),
+                  ? const Center(
+                      child: CircularProgressIndicator(),
                     )
-                  : Stack(),
+                  : Container(),
             ],
           ),
         ),
