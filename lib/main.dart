@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:animated_splash_screen/animated_splash_screen.dart';
@@ -38,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
-      splash: FlutterLogo,
+      splash: const FlutterLogo(size: 100,),
       nextScreen: const HomeScreen(),
       splashTransition: SplashTransition.fadeTransition,
       pageTransitionType: PageTransitionType.bottomToTop,
