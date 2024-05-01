@@ -1,16 +1,59 @@
-# Simple Webview APP
+# Flutter WebView App
 
-A new Flutter project.
+This Flutter application utilizes WebView to display a web page and includes a splash screen using the `animated_splash_screen` package.
 
-## Getting Started
+## Installation
 
-This project is a starting point for a Flutter application.
+1. Clone the repository:
 
-A few resources to get you started if this is your first Flutter project:
+   ```bash
+   git clone https://github.com/your-username/flutter-webview-app.git
+   ```
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+2. Navigate to the project directory:
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+   ```bash
+   cd flutter-webview-app
+   ```
+
+3. Ensure that Flutter is installed on your system.
+
+4. Install dependencies:
+
+   ```bash
+   flutter pub get
+   ```
+
+5. Run the app:
+
+   ```bash
+   flutter run
+   ```
+
+## Features
+
+- Displays a splash screen with a Flutter logo animation.
+- Utilizes WebView to load and display a web page.
+- Handles email, phone, and WhatsApp links within the WebView.
+
+## Usage
+
+1. Open the app on your device.
+2. Wait for the splash screen animation to finish.
+3. The web page will be loaded in the WebView.
+4. Navigate back and forth within the WebView.
+5. Email, phone, and WhatsApp links will be handled by the device's default applications.
+
+## Dependencies
+
+- `webview_flutter`: For displaying web content within the app.
+- `animated_splash_screen`: For creating a splash screen with animation.
+- `url_launcher`: For handling email, phone, and WhatsApp links.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit bug reports, feature requests, or pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
